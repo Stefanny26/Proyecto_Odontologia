@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:odontologia-app": "node dist/odontologia-app/server/server.mjs"
+    "serve:ssr:odontologia-app": "node dist/odontologia-app/server/server.mjs",
+     "proxyConfig": "proxy.conf.json"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,7 @@
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.10",
     "bootstrap": "^5.3.6",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

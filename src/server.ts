@@ -4,12 +4,13 @@ import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
+import cors from 'cors';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 const indexHtml = join(serverDistFolder, 'index.server.html');
 
-const app = express();
+let app = express();
 const commonEngine = new CommonEngine();
 
 /**
@@ -27,6 +28,22 @@ const commonEngine = new CommonEngine();
 /**
  * Serve static files from /browser
  */
+app = express();
+
+  app.use(cors({
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }));
+
+  // API example
+  app.get('/api/pacientes', (req, res) => {
+    const pacientes = [
+      { id: 1, nombre: 'Juan Perez' },
+      { id: 2, nombre: 'Maria Lopez' }
+    ];
+    res.json(pacientes);
+  });
 app.get(
   '**',
   express.static(browserDistFolder, {
