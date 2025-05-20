@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component'; // <-- Importa el footer
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'], // (nota: plural styleUrls)
+  standalone: true,  // (si usas standalone components es obligatorio ponerlo)
+  imports: [
+    RouterOutlet, 
+    NavbarComponent, 
+    FooterComponent,
+  ]
 })
 export class AppComponent {
   title = 'odontologia-app';
