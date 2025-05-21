@@ -1,17 +1,15 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient} from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { BrowserModule } from '@angular/platform-browser';
 import { MatSelectModule } from '@angular/material/select';
 
 interface Odontologo {
-  _id?: string;
+  id: number;
   nombre: string;
   especialidad: string;
   telefono: string;
@@ -19,7 +17,6 @@ interface Odontologo {
   fechaNacimiento: string;
   genero: 'Femenino' | 'Masculino';
 }
-
 
 @Component({
   selector: 'app-odontologo',
@@ -34,66 +31,73 @@ interface Odontologo {
     MatButtonModule,
     MatTableModule,
     MatIconModule,
-    BrowserModule,
-    MatSelectModule
+    MatSelectModule,
   ]
 })
 export class OdontologoComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private http = inject(HttpClient);
 
   formulario: FormGroup = this.fb.group({
-  nombre: ['', Validators.required],
-  especialidad: ['', Validators.required],
-  telefono: ['', Validators.required],
-  email: ['', [Validators.required, Validators.email]],
-  fechaNacimiento: ['', Validators.required],
-  genero: ['', Validators.required]
-});
-
+    nombre: ['', Validators.required],
+    especialidad: ['', Validators.required],
+    telefono: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    fechaNacimiento: ['', Validators.required],
+    genero: ['', Validators.required]
+  });
 
   odontologos: Odontologo[] = [];
-  columnas: string[] = ['nombre', 'especialidad', 'telefono', 'email', 'acciones'];
+  columnas: string[] = ['nombre', 'especialidad', 'telefono', 'email', 'fechaNacimiento', 'genero', 'acciones'];
   editando: boolean = false;
-  idEditando: string | null = null;
+  idEditando: number | null = null;
 
-  private API_URL = 'http://localhost:4000/api/odontologos';
-
+  private idCounter = 1; // Para IDs únicos en memoria
 
   ngOnInit(): void {
-    this.obtenerOdontologos();
-  }
-
-  obtenerOdontologos(): void {
-    this.http.get<Odontologo[]>(this.API_URL).subscribe(data => this.odontologos = data);
+    // Puedes poner datos iniciales si quieres:
+    this.odontologos = [
+      {
+        id: this.idCounter++,
+        nombre: 'Ana Gómez',
+        especialidad: 'Ortodoncia',
+        telefono: '0991234567',
+        email: 'ana@example.com',
+        fechaNacimiento: '1985-10-15',
+        genero: 'Femenino'
+      }
+    ];
   }
 
   guardarOdontologo(): void {
+    if (this.formulario.invalid) return;
+
     const datos = this.formulario.value;
 
-    if (this.editando && this.idEditando) {
-      this.http.put(`${this.API_URL}/${this.idEditando}`, datos).subscribe(() => {
-        this.obtenerOdontologos();
-        this.cancelar();
-      });
+    if (this.editando && this.idEditando !== null) {
+      // Actualizar
+      const index = this.odontologos.findIndex(o => o.id === this.idEditando);
+      if (index !== -1) {
+        this.odontologos[index] = { id: this.idEditando, ...datos };
+      }
+      this.cancelar();
     } else {
-      this.http.post(this.API_URL, datos).subscribe(() => {
-        this.obtenerOdontologos();
-        this.formulario.reset();
-      });
+      // Crear nuevo
+      this.odontologos.push({ id: this.idCounter++, ...datos });
+      this.formulario.reset();
     }
   }
 
   editar(o: Odontologo): void {
     this.formulario.patchValue(o);
     this.editando = true;
-    this.idEditando = o._id ?? null;
+    this.idEditando = o.id;
   }
 
-  eliminar(id: string): void {
-    this.http.delete(`${this.API_URL}/${id}`).subscribe(() => {
-      this.obtenerOdontologos();
-    });
+  eliminar(id: number): void {
+    this.odontologos = this.odontologos.filter(o => o.id !== id);
+    if (this.editando && this.idEditando === id) {
+      this.cancelar();
+    }
   }
 
   cancelar(): void {
