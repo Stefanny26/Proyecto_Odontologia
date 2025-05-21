@@ -1,8 +1,10 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
-import { AppComponent } from './app/app.component';
+import { InicioComponent } from './app/pages/inicio/inicio.component';
 
-bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes)],
+bootstrapApplication(InicioComponent, {
+  providers: [
+    provideRouter(routes),
+  ],
 });

@@ -1,0 +1,50 @@
+<div class="container my-5">
+    <h2 class="text-center mb-4">Agendar Cita Odontológica</h2>
+
+    <form (ngSubmit)="agendarCita()" [formGroup]="formularioCita">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="date" id="fecha" class="form-control" formControlName="fecha">
+            </div>
+
+            <div class="col-md-6">
+                <label for="hora" class="form-label">Hora</label>
+                <select id="hora" class="form-select" formControlName="hora">
+                    <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="paciente" class="form-label">Paciente</label>
+                <input type="text" id="paciente" class="form-control" formControlName="paciente">
+            </div>
+
+            <div class="col-md-6">
+                <label for="odontologo" class="form-label">Odontólogo</label>
+                <select id="odontologo" class="form-select" formControlName="odontologo">
+                    <option *ngFor="let odontologo of odontologos" [value]="odontologo">{{ odontologo }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" type="submit">Guardar Cita</button>
+        </div>
+    </form>
+
+    <!-- Vista tipo horario -->
+    <div class="mt-5">
+        <h4>Horario del día seleccionado</h4>
+        <div class="row g-2">
+            <div class="col-md-2" *ngFor="let hora of horasDisponibles">
+                <div class="p-2 border rounded text-center" [ngClass]="{
+                 'bg-success text-white': !citasAgendadas.includes(hora),
+                 'bg-danger text-white': citasAgendadas.includes(hora)
+               }">
+                    {{ hora }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
