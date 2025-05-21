@@ -46,3 +46,35 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`✅ Servidor backend corriendo en http://localhost:${port}`);
 });
+
+
+let odontologos = [];
+
+// GET - Listar odontólogos
+app.get('/api/odontologos', (req, res) => {
+  res.json(odontologos);
+});
+
+// POST - Agregar odontólogo
+app.post('/api/odontologos', (req, res) => {
+  const nuevoOdontologo = { _id: uuidv4(), ...req.body };
+  odontologos.push(nuevoOdontologo);
+  res.status(201).json(nuevoOdontologo);
+});
+
+// PUT - Editar odontólogo
+app.put('/api/odontologos/:id', (req, res) => {
+  const id = req.params.id;
+  odontologos = odontologos.map(o =>
+    o._id === id ? { ...o, ...req.body } : o
+  );
+  res.json({ mensaje: 'Odontólogo actualizado' });
+});
+
+// DELETE - Eliminar odontólogo
+app.delete('/api/odontologos/:id', (req, res) => {
+  const id = req.params.id;
+  odontologos = odontologos.filter(o => o._id !== id);
+  res.json({ mensaje: 'Odontólogo eliminado' });
+});
+

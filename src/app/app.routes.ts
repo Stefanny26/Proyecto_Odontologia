@@ -1,12 +1,17 @@
 import { Routes } from '@angular/router';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { PacienteComponent } from './pacientes/pacientes.component';
+import { OdontologoComponent } from './odontologos/odontologos.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: InicioComponent,
-    
+    redirectTo: 'inicio',
+    pathMatch: 'full'
+  },
+  {
+    path: 'inicio',
+    component: InicioComponent
   },
   {
     path: 'pacientes',
@@ -16,6 +21,9 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'pacientes',
     pathMatch: 'full'
+  },
+  {
+    path: 'odontologos',
+    component: OdontologoComponent
   }
-  // otras rutas si las tienes
 ];

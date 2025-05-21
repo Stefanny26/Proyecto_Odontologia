@@ -30,6 +30,8 @@ const commonEngine = new CommonEngine();
  */
 app = express();
 
+app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
+
   app.use(cors({
     origin: 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
