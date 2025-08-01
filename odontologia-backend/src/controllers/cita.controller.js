@@ -5,11 +5,12 @@ exports.getAll = async (req, res) => {
   try {
     const citas = await Cita.find()
       .populate('paciente', 'nombres telefono')
-      .populate('odontologo', 'nombres especialidad')
-      .sort({ fecha: 1, hora: 1 });
+      .populate('odontologo', 'nombre especialidad telefono email') // Se agregó el campo 'nombre'
+      .sort({ fecha: -1, hora: -1 }); // Se cambió a orden descendente
     res.json(citas);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al obtener citas:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
 
@@ -30,7 +31,7 @@ exports.create = async (req, res) => {
 exports.getCitasPorFecha = async (req, res) => {
   try {
     const { fecha } = req.params;
-    const citas = await Cita.find({ fecha });
+    const citas = await Cita.find({ fecha: fecha });
     res.json(citas);
   } catch (error) {
     res.status(500).json({ error: error.message });
