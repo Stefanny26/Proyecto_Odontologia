@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+  <div class="container">
+    <!-- Logo a la izquierda -->
+    <a class="navbar-brand" routerLink="/">
+      <img src="assets/logo.png" alt="Logo" width="150" height="80" />
+    </a>
+
+    <!-- Botón de menú responsive -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Enlaces de navegación -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <!-- INICIO -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="fas fa-home me-1"></i>
+            Inicio
+          </a>
+        </li>
+
+        <!-- PACIENTES -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/pacientes" routerLinkActive="active">
+            <i class="fas fa-users me-1"></i>
+            Pacientes
+          </a>
+        </li>
+
+        <!-- ODONTÓLOGOS -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/odontologos" routerLinkActive="active">
+            <i class="fas fa-user-md me-1"></i>
+            Odontólogos
+          </a>
+        </li>
+
+        <!-- DROPDOWN PARA CITAS -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-calendar-alt me-1"></i>
+            Citas
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/agendar-cita" routerLinkActive="active">
+                <i class="fas fa-calendar-plus me-2"></i>
+                Agendar Cita
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/citas" routerLinkActive="active">
+                <i class="fas fa-list me-2"></i>
+                Ver Todas las Citas
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item text-muted" href="#" style="cursor: default;">
+                <i class="fas fa-chart-bar me-2"></i>
+                Reportes (Próximamente)
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

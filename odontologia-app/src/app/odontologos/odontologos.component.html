@@ -1,0 +1,182 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="mb-4">Gestión de Odontólogos</h2>
+
+      <!-- Mensajes -->
+      <div *ngIf="mensaje" class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ mensaje }}
+        <button type="button" class="btn-close" (click)="mensaje = ''" aria-label="Close"></button>
+      </div>
+
+      <!-- Formulario -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5>{{ editandoId ? 'Editar Odontólogo' : 'Nuevo Odontólogo' }}</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formulario" (ngSubmit)="guardar()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="nombre" class="form-label">Nombre *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nombre"
+                  formControlName="nombre"
+                  [class.is-invalid]="esCampoInvalido('nombre')">
+                <div class="invalid-feedback">
+                  El nombre es requerido y debe tener al menos 2 caracteres.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="especialidad" class="form-label">Especialidad *</label>
+                <select 
+                  class="form-select" 
+                  id="especialidad"
+                  formControlName="especialidad"
+                  [class.is-invalid]="esCampoInvalido('especialidad')">
+                  <option value="">Selecciona una especialidad</option>
+                  <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+                </select>
+                <div class="invalid-feedback">
+                  La especialidad es requerida.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="telefono" class="form-label">Teléfono *</label>
+                <input 
+                  type="tel" 
+                  class="form-control" 
+                  id="telefono"
+                  formControlName="telefono"
+                  placeholder="1234567890"
+                  [class.is-invalid]="esCampoInvalido('telefono')">
+                <div class="invalid-feedback">
+                  El teléfono debe tener exactamente 10 dígitos.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email *</label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email"
+                  formControlName="email"
+                  placeholder="ejemplo@correo.com"
+                  [class.is-invalid]="esCampoInvalido('email')">
+                <div class="invalid-feedback">
+                  Ingresa un email válido.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento *</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  id="fechaNacimiento"
+                  formControlName="fechaNacimiento"
+                  [class.is-invalid]="esCampoInvalido('fechaNacimiento')">
+                <div class="invalid-feedback">
+                  La fecha de nacimiento es requerida.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="genero" class="form-label">Género *</label>
+                <select 
+                  class="form-select" 
+                  id="genero"
+                  formControlName="genero"
+                  [class.is-invalid]="esCampoInvalido('genero')">
+                  <option value="Femenino">Femenino</option>
+                  <option value="Masculino">Masculino</option>
+                </select>
+                <div class="invalid-feedback">
+                  El género es requerido.
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                style="cursor: pointer;">
+                {{ editandoId ? 'Actualizar' : 'Agregar' }}
+              </button>
+              
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="cancelar()" 
+                *ngIf="editandoId"
+                style="cursor: pointer;">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tabla de odontólogos -->
+      <div class="card">
+        <div class="card-header">
+          <h5>Odontólogos Registrados ({{ odontologos.length }})</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Especialidad</th>
+                  <th>Teléfono</th>
+                  <th>Email</th>
+                  <th>Género</th>
+                  <th>Fecha de Nacimiento</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of odontologos">
+                  <td>{{ o.nombre }}</td>
+                  <td>{{ o.especialidad }}</td>
+                  <td>{{ o.telefono }}</td>
+                  <td>{{ o.email }}</td>
+                  <td>{{ o.genero }}</td>
+                  <td>{{ o.fechaNacimiento | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    <button 
+                      type="button"
+                      class="btn btn-sm btn-outline-primary me-2"
+                      (click)="editar(o)"
+                      style="cursor: pointer;">
+                      Editar
+                    </button>
+                    <button 
+                      type="button"
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="eliminar(o._id!)"
+                      style="cursor: pointer;">
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="odontologos.length === 0">
+                  <td colspan="7" class="text-center text-muted">
+                    No hay odontólogos registrados
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

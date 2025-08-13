@@ -1,0 +1,174 @@
+<div class="container my-5">
+  <h2 class="text-center mb-4">Agendar Cita Odontológica</h2>
+
+  <!-- Mensajes -->
+  <div *ngIf="mensaje" class="alert alert-dismissible fade show" 
+       [class.alert-success]="mensaje.includes('éxito')"
+       [class.alert-danger]="mensaje.includes('Error')"
+       [class.alert-warning]="!mensaje.includes('éxito') && !mensaje.includes('Error')" role="alert">
+    {{ mensaje }}
+    <button type="button" class="btn-close" (click)="limpiarMensaje()" aria-label="Close"></button>
+  </div>
+
+  <form [formGroup]="formularioCita" (ngSubmit)="agendarCita()" class="row g-3">
+    <div class="col-md-6">
+      <label for="paciente" class="form-label">Paciente *</label>
+      <select 
+        class="form-select" 
+        id="paciente"
+        formControlName="paciente"
+        [class.is-invalid]="esCampoInvalido('paciente')">
+        <option value="">Selecciona un paciente</option>
+        <option *ngFor="let paciente of pacientes" [value]="paciente._id">
+          {{ paciente.nombres }} - {{ paciente.telefono }}
+        </option>
+      </select>
+      <div class="invalid-feedback">
+        El paciente es requerido.
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="odontologo" class="form-label">Odontólogo *</label>
+      <select 
+        class="form-select" 
+        id="odontologo"
+        formControlName="odontologo"
+        [class.is-invalid]="esCampoInvalido('odontologo')">
+        <option value="">Selecciona un odontólogo</option>
+        <option *ngFor="let odontologo of odontologos" [value]="odontologo._id">
+          {{ odontologo.nombre }} - {{ odontologo.especialidad }}
+        </option>
+      </select>
+      <div class="invalid-feedback">
+        El odontólogo es requerido.
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="fecha" class="form-label">Fecha *</label>
+      <input 
+        type="date" 
+        class="form-control" 
+        id="fecha"
+        formControlName="fecha"
+        [min]="fechaMinima"
+        [class.is-invalid]="esCampoInvalido('fecha')">
+      <div class="invalid-feedback">
+        La fecha es requerida.
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="motivo" class="form-label">Motivo de la consulta *</label>
+      <textarea 
+        class="form-control" 
+        id="motivo"
+        formControlName="motivo"
+        rows="3"
+        placeholder="Describe el motivo de la consulta"
+        [class.is-invalid]="esCampoInvalido('motivo')"></textarea>
+      <div class="invalid-feedback">
+        El motivo es requerido y debe tener al menos 5 caracteres.
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <label for="observaciones" class="form-label">Observaciones (opcional)</label>
+      <textarea 
+        class="form-control" 
+        id="observaciones"
+        formControlName="observaciones"
+        rows="2"
+        placeholder="Observaciones adicionales"></textarea>
+    </div>
+
+    <div class="col-12 text-center">
+      <button 
+        type="submit" 
+        class="btn btn-primary btn-lg px-5"
+        [disabled]="formularioCita.invalid || !formularioCita.get('hora')?.value">
+        <i class="fas fa-calendar-plus me-2"></i>
+        Agendar Cita
+      </button>
+    </div>
+  </form>
+
+  <hr class="my-5">
+
+  <!-- Selector de Horarios -->
+  <div *ngIf="formularioCita.get('fecha')?.value" class="horarios-section">
+    <h4 class="text-center mb-4">
+      <i class="fas fa-clock me-2"></i>
+      Horarios Disponibles para {{ formularioCita.get('fecha')?.value | date:'dd/MM/yyyy' }}
+    </h4>
+    
+    <!-- Leyenda -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-auto">
+        <div class="d-flex gap-4 align-items-center">
+          <div class="d-flex align-items-center">
+            <div class="hora-ejemplo disponible me-2"></div>
+            <span>Disponible</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="hora-ejemplo ocupado me-2"></div>
+            <span>Ocupado</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="hora-ejemplo seleccionado me-2"></div>
+            <span>Seleccionado</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid de Horarios -->
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="horarios-grid">
+          <div 
+            *ngFor="let hora of horasDisponibles" 
+            class="hora-card"
+            [class.disponible]="!estaOcupado(hora) && !estaSeleccionado(hora)"
+            [class.ocupado]="estaOcupado(hora)"
+            [class.seleccionado]="estaSeleccionado(hora)"
+            [class.clickable]="!estaOcupado(hora)"
+            (click)="seleccionarHora(hora)">
+            
+            <div class="hora-contenido">
+              <i class="fas fa-clock hora-icono"></i>
+              <span class="hora-texto">{{ hora }}</span>
+              <div class="hora-estado">
+                <i *ngIf="estaOcupado(hora)" class="fas fa-times"></i>
+                <i *ngIf="!estaOcupado(hora) && estaSeleccionado(hora)" class="fas fa-check"></i>
+                <i *ngIf="!estaOcupado(hora) && !estaSeleccionado(hora)" class="fas fa-plus"></i>
+              </div>
+            </div>
+            
+            <div class="hora-estado-texto">
+              {{ estaOcupado(hora) ? 'Ocupado' : (estaSeleccionado(hora) ? 'Seleccionado' : 'Disponible') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="row justify-content-center mt-4" *ngIf="citasAgendadas.length > 0">
+      <div class="col-md-8">
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong>{{ citasAgendadas.length }}</strong> cita(s) ya agendada(s) para esta fecha.
+          Horas ocupadas: <strong>{{ citasAgendadas.join(', ') }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay fecha seleccionada -->
+  <div *ngIf="!formularioCita.get('fecha')?.value" class="text-center text-muted">
+    <i class="fas fa-calendar-alt fa-3x mb-3"></i>
+    <h5>Selecciona una fecha para ver los horarios disponibles</h5>
+  </div>
+</div>

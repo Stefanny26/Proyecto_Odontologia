@@ -1,0 +1,218 @@
+.header-cita {
+  background-color: #004a6e;
+  font-weight: 600;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.25rem;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #084cd9;
+  border-color: #084cd9;
+}
+
+.horario-slot {
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: default;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.horarios-section {
+  .hora-ejemplo {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+
+    &.disponible {
+      background-color: #28a745;
+    }
+
+    &.ocupado {
+      background-color: #dc3545;
+    }
+
+    &.seleccionado {
+      background-color: #007bff;
+    }
+  }
+}
+
+.horarios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hora-card {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &.disponible {
+    border-color: #28a745;
+    background-color: #f8fff9;
+
+    &:hover {
+      background-color: #e8f5e8;
+      border-color: #20c997;
+    }
+
+    .hora-icono {
+      color: #28a745;
+    }
+
+    .hora-estado i {
+      color: #28a745;
+    }
+
+    .hora-estado-texto {
+      color: #28a745;
+      font-weight: 600;
+    }
+  }
+
+  &.ocupado {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+
+    .hora-icono {
+      color: #dc3545;
+    }
+
+    .hora-estado i {
+      color: #dc3545;
+    }
+
+    .hora-estado-texto {
+      color: #dc3545;
+      font-weight: 600;
+    }
+
+    .hora-texto {
+      text-decoration: line-through;
+    }
+  }
+
+  &.seleccionado {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+
+    .hora-icono {
+      color: #007bff;
+    }
+
+    .hora-estado i {
+      color: #007bff;
+    }
+
+    .hora-estado-texto {
+      color: #007bff;
+      font-weight: 700;
+    }
+  }
+}
+
+.hora-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hora-icono {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.hora-texto {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.hora-estado {
+  margin-top: 5px;
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+.hora-estado-texto {
+  font-size: 0.85rem;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .horarios-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .hora-card {
+    min-height: 100px;
+    padding: 15px;
+  }
+
+  .hora-icono {
+    font-size: 1.2rem;
+  }
+
+  .hora-texto {
+    font-size: 1rem;
+  }
+}
+
+// Animaciones
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+.hora-card.seleccionado {
+  animation: pulse 2s infinite;
+}

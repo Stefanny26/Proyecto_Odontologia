@@ -1,0 +1,122 @@
+<!-- HERO / BANNER -->
+<div class="container-fluid p-0">
+  <div class="hero d-flex align-items-center text-white">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="display-4 fw-bold">Clínica Dental</h1>
+          <p class="lead">
+            Atención personalizada más allá de lo esperado. <br>
+            Tu sonrisa es nuestra prioridad.
+          </p>
+          <div class="mt-4">
+            <a routerLink="/agendar-cita" class="btn btn-light btn-lg me-3">
+              <i class="fas fa-calendar-plus me-2"></i>
+              Agendar Cita
+            </a>
+            <a routerLink="/citas" class="btn btn-outline-light btn-lg">
+              <i class="fas fa-list me-2"></i>
+              Ver Citas
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 text-center">
+          <img src="assets/Portada.jpg" alt="Paciente" class="img-fluid rounded shadow-lg">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCESOS RÁPIDOS -->
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <h2 class="display-5 fw-bold text-primary">Accesos Rápidos</h2>
+      <p class="lead text-muted">Accede rápidamente a las funciones más utilizadas</p>
+    </div>
+  </div>
+  
+  <div class="row g-4 mb-5">
+    <div class="col-md-6 col-lg-3" *ngFor="let acceso of accesosRapidos">
+      <div class="card h-100 shadow-sm border-0 hover-card">
+        <div class="card-body text-center p-4">
+          <div class="mb-3">
+            <i [class]="acceso.icono + ' fa-3x text-' + acceso.color.split('-')[1]"></i>
+          </div>
+          <h5 class="card-title fw-bold">{{ acceso.titulo }}</h5>
+          <p class="card-text text-muted">{{ acceso.descripcion }}</p>
+          <a [routerLink]="acceso.ruta" [class]="'btn ' + acceso.color + ' btn-sm px-4'">
+            Acceder <i class="fas fa-arrow-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<div id="services" class="bg-light py-5">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-12 mb-5">
+        <h2 class="display-5 fw-bold text-primary">Nuestros Servicios</h2>
+        <p class="lead text-muted">Sistema integral para la gestión de tu clínica dental</p>
+      </div>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3" *ngFor="let servicio of servicios">
+        <div class="card h-100 shadow-sm border-0 service-card">
+          <div class="card-body p-4">
+            <div class="mb-4">
+              <i [class]="servicio.icono" style="font-size: 3rem;"></i>
+            </div>
+            <h5 class="card-title fw-bold">{{ servicio.titulo }}</h5>
+            <p class="card-text text-muted">{{ servicio.descripcion }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ESTADÍSTICAS RÁPIDAS (Opcional) -->
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12 text-center mb-4">
+      <h3 class="fw-bold text-primary">Estado Actual del Sistema</h3>
+    </div>
+  </div>
+  
+  <div class="row g-4 text-center">
+    <div class="col-md-3">
+      <div class="stat-card">
+        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+        <h4 class="fw-bold text-primary">Pacientes</h4>
+        <p class="text-muted">Gestiona tu base de pacientes</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <i class="fas fa-user-md fa-2x text-success mb-2"></i>
+        <h4 class="fw-bold text-success">Odontólogos</h4>
+        <p class="text-muted">Administra tu equipo médico</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <i class="fas fa-calendar-check fa-2x text-info mb-2"></i>
+        <h4 class="fw-bold text-info">Citas Hoy</h4>
+        <p class="text-muted">Revisa la agenda del día</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card">
+        <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
+        <h4 class="fw-bold text-warning">Reportes</h4>
+        <p class="text-muted">Análisis y estadísticas</p>
+      </div>
+    </div>
+  </div>
+</div>
